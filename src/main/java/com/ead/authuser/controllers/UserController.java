@@ -80,7 +80,7 @@ public class UserController {
             userModel.setPhoneNumber(userDto.getPhoneNumber());
             userModel.setCpf(userDto.getCpf());
             userService.save(userModel);
-            log.debug("PUT updateUser - userModel saved {} ", userModel.toString());
+            log.debug("PUT updateUser - userId saved {} ", userModel.getUserId());
             log.info("User updated successfully userId {} ", userModel.getUserId());
             return ResponseEntity.status(HttpStatus.OK).body(userModel);
         }
@@ -101,7 +101,7 @@ public class UserController {
             var userModel = userModelOptional.get();
             userModel.setPassword(userDto.getPassword());
             userService.save(userModel);
-            log.debug("PUT updatePassword - userModel saved {} ", userModel.toString());
+            log.debug("PUT updatePassword - UserId saved {} ", userModel.getUserId());
             log.info("Password updated successfully!");
             return ResponseEntity.status(HttpStatus.OK).body("Password update successfully.");
         }
@@ -119,7 +119,7 @@ public class UserController {
             var userModel = userModelOptional.get();
             userModel.setImageUrl(userDto.getImageUrl());
             userService.save(userModel);
-            log.debug("PUT updateImage - userModel saved {} ", userModel.toString());
+            log.debug("PUT updateImage - UserId saved {} ", userModel.getUserId());
             log.info("Image updated successfully!");
             return ResponseEntity.status(HttpStatus.OK).body(userModel);
         }
