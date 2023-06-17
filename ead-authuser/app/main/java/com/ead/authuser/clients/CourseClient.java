@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -46,10 +47,5 @@ public class CourseClient {
         }
         log.info("Ending request /courses userId: {} ", userId);
         return  result.getBody();
-    }
-
-    public void deleteUserInCourse(UUID userId) {
-        String url = REQUEST_URI_COURSE + "/courses/users/" + userId;
-        restTemplate.exchange(url, HttpMethod.DELETE, null, String.class);
     }
 }
