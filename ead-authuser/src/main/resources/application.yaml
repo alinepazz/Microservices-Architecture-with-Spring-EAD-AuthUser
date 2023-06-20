@@ -22,6 +22,9 @@ spring:
   output:
     ansi:
       enabled: Always
+  rabbitmq:
+    addresses: amqps://cjcvyqwr:T5q-IJ-1vDAW5ZzE9erVjwVijjbYxdNC@jackal.rmq.cloudamqp.com/cjcvyqwr
+
 logging:
   level:
     com.ead: TRACE
