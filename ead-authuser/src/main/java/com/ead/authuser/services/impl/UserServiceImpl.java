@@ -2,6 +2,8 @@ package com.ead.authuser.services.impl;
 
 import com.ead.authuser.clients.CourseClient;
 import com.ead.authuser.models.UserModel;
+import com.ead.authuser.models.enums.ActionType;
+import com.ead.authuser.publishers.UserEventPubliser;
 import com.ead.authuser.repositories.UserRepository;
 import com.ead.authuser.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -22,6 +25,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     CourseClient courseClient;
+
+    @Autowired
+    UserEventPubliser userEventPubliser;
 
     @Override
     public List<UserModel> findAll() {
@@ -56,5 +62,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public Page<UserModel> findAll(Specification<UserModel> spec,Pageable pageable) {
         return userRepository.findAll(spec, pageable);
+    }
+
+    @Transactional
+    @Override
+    public UserModel saveUser(UserModel userModel){
+        save(userModel);
+        userEventPubliser.publishUserEvent(userModel.convertToUserEventDto(), ActionType.CREATE);
+        return userModel;
     }
 }
