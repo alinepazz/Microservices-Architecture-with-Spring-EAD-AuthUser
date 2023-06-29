@@ -61,7 +61,7 @@ public class UserController {
         if (!userModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found!");
         }else {
-            userService.delete(userModelOptional.get());
+            userService.deleteUser(userModelOptional.get());
             log.debug("DELETE deleteUser - userId deleted {} ", userId);
             log.info("User deleted successfully userId {} ",userId);
             return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully");
@@ -81,7 +81,7 @@ public class UserController {
             userModel.setFullName(userDto.getFullName());
             userModel.setPhoneNumber(userDto.getPhoneNumber());
             userModel.setCpf(userDto.getCpf());
-            userService.save(userModel);
+            userService.updateUser(userModel);
             log.debug("PUT updateUser - userId saved {} ", userModel.getUserId());
             log.info("User updated successfully userId {} ", userModel.getUserId());
             return ResponseEntity.status(HttpStatus.OK).body(userModel);
@@ -102,7 +102,7 @@ public class UserController {
         }else {
             var userModel = userModelOptional.get();
             userModel.setPassword(userDto.getPassword());
-            userService.save(userModel);
+            userService.updatePassword(userModel);
             log.debug("PUT updatePassword - UserId saved {} ", userModel.getUserId());
             log.info("Password updated successfully!");
             return ResponseEntity.status(HttpStatus.OK).body("Password update successfully.");
@@ -120,7 +120,7 @@ public class UserController {
         }else {
             var userModel = userModelOptional.get();
             userModel.setImageUrl(userDto.getImageUrl());
-            userService.save(userModel);
+            userService.updateUser(userModel);
             log.debug("PUT updateImage - UserId saved {} ", userModel.getUserId());
             log.info("Image updated successfully!");
             return ResponseEntity.status(HttpStatus.OK).body(userModel);

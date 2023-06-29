@@ -45,8 +45,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(UserModel userModel) {
+    public UserModel save(UserModel userModel) {
         userRepository.save(userModel);
+        return userModel;
     }
 
     @Override
@@ -70,5 +71,25 @@ public class UserServiceImpl implements UserService {
         save(userModel);
         userEventPubliser.publishUserEvent(userModel.convertToUserEventDto(), ActionType.CREATE);
         return userModel;
+    }
+
+    @Transactional
+    @Override
+    public void deleteUser(UserModel userModel) {
+        delete(userModel);
+        userEventPubliser.publishUserEvent(userModel.convertToUserEventDto(), ActionType.DELETE);
+    }
+
+    @Transactional
+    @Override
+    public UserModel updateUser(UserModel userModel) {
+        save(userModel);
+        userEventPubliser.publishUserEvent(userModel.convertToUserEventDto(), ActionType.UPDATE);
+        return userModel;
+    }
+
+    @Override
+    public UserModel updatePassword(UserModel userModel) {
+        return save(userModel);
     }
 }
