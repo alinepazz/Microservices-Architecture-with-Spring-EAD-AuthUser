@@ -2,7 +2,7 @@ package com.ead.authuser.services.impl;
 
 import com.ead.authuser.clients.CourseClient;
 import com.ead.authuser.models.UserModel;
-import com.ead.authuser.models.enums.ActionType;
+import com.ead.authuser.enums.ActionType;
 import com.ead.authuser.publishers.UserEventPubliser;
 import com.ead.authuser.repositories.UserRepository;
 import com.ead.authuser.services.UserService;
