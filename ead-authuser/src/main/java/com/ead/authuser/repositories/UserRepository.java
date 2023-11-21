@@ -14,4 +14,7 @@ public interface UserRepository extends JpaRepository<UserModel, UUID>, JpaSpeci
     boolean existsByEmail(String email);
     @EntityGraph(attributePaths = "roles", type = EntityGraph.EntityGraphType.FETCH)
     Optional<UserModel>findByUserName(String username);
+
+    @EntityGraph(attributePaths = "roles", type = EntityGraph.EntityGraphType.FETCH)
+    Optional<UserModel>findByUserId(UUID userId);
 }

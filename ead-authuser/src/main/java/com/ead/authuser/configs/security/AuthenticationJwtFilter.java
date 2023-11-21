@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.UUID;
 
 @Log4j2
 public class AuthenticationJwtFilter extends OncePerRequestFilter {
@@ -22,15 +23,15 @@ public class AuthenticationJwtFilter extends OncePerRequestFilter {
     JwtProvider jwtProvider;
 
     @Autowired
-    UserDetailsService userDetailsService;
+    UserDetailsServiceImpl userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwtStr = getTokenHeader(httpServletRequest);
             if (jwtStr != null && jwtProvider.validateJwt(jwtStr)){
-                String username = jwtProvider.getUsernameJwt(jwtStr);
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                String userId = jwtProvider.getSubjectJwt(jwtStr);
+                UserDetails userDetails = userDetailsService.loadUserById(UUID.fromString(userId));
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
