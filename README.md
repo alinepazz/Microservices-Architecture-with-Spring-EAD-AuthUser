@@ -55,9 +55,10 @@ Cada funcionalidade da plataforma é abordada como um serviço independente, pro
 
 ## Como executar o projeto
 - Pré-requisitos: Java 11
-- Ter o projeto Service Registry em execução
-- Ter o projeto Config Server em execução
-- Ter o projeto API Gateway em execução
+- Ter os seguinte projetos em execução:
+    - Service Registry
+    - Config Server
+    - Api Gateway
 
 ```bash
 # clonar repositório
