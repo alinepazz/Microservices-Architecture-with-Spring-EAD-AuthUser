@@ -84,4 +84,32 @@ public class AuthenticationController {
         String jwt = jwtProvider.generateJwt(authentication);
         return ResponseEntity.ok(new JwtDto(jwt));
     }
+
+    @PostMapping("/signup/admin/usr")
+    public ResponseEntity<Object> registerUserAdmin(@RequestBody @Validated(UserDto.UserView.RegistrationPost.class)
+                                               @JsonView(UserDto.UserView.RegistrationPost.class) UserDto userDto){
+        log.debug("POST registerUser - userDto received {} ", userDto.toString());
+        if (userService.existsByUserName(userDto.getUserName())){
+            log.warn("Username {} is Already taken ", userDto.getUserName());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Username is Already taken!");
+        }
+        if (userService.existsByEmail(userDto.getEmail())){
+            log.warn("Email {} is Already taken ", userDto.getEmail());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Email is Already taken!");
+        }
+
+        RoleModel roleModel = roleService.findByRoleName(RoleType.ROLE_ADMIN).orElseThrow(()
+                -> new RuntimeException("Error: Role is not found"));
+
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        var userModel = new UserModel();
+        BeanUtils.copyProperties(userDto, userModel);
+        userModel.setUserStatus(UserStatus.ACTIVE);
+        userModel.setUserType(UserType.ADMIN);
+        userModel.getRoles().add(roleModel);
+        userService.saveUser(userModel);
+        log.debug("POST registerUser - userId saved {} ", userModel.getUserId());
+        log.info("User saved successfully userId {} ", userModel.getUserId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(userModel);
+    }
 }
